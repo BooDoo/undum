@@ -1,3 +1,61 @@
+var shortRappers = ['DOOM', 'Notorious', 'Quest', 'Black+Star', 'Mos+Def', '2Pac', 'Method', 'Busta', 'Geedorah', 'Madvillain',
+                                        'Ghostface', 'Roots', 'Wu-Tang', 'Blackalicious', 'Ice+Cube', 'Dre', 'De+La+Soul', 'Kanye', 'Nas', 'Homosapien',
+                                        'Mase', 'Lil+Kim', 'Goodie+Mob', 'DANGERDOOM', 'Kweli', 'TI', 'Ludacris', 'Common', 'Eazy'],
+
+        shortSongs = {"DOOM": ['Dead', 'Doomsday', 'Finest', 'Drawls', 'Tick', 'Beer', 'Ladies', 'Flow', 'Hey', 'Greenbacks', 'Vomitspit', 'Kookies', 'Frenz'], 
+                                    "Notorious": ['Hypnotize', 'Juicy', 'Poppa', 'Door', 'Chance', 'Going', 'Problems', 'Friend', 'Bleed', 'Nobody', 'Machine', 'Crack', 'Phenomenon', 'Nasty'],
+                                    "Quest": ['Award', 'Kick', 'Scenario', 'Applebum', 'Relaxation', 'Find', 'Wallet', 'Jazz', 'God', 'Steppin', 'Clap', 'Rhime', 'Sex', 'Like', 'Butter', 'Lucien', 'Buggin', 'Common', 'Stories'],
+                                    "Black+Star": ['Astronomy', 'Brown', 'Will', 'Definition', 'Players', 'Respiration', 'Thieves', 'Twice'],
+                                    "Mos+Def": ['Document', 'Bedstuy', 'Ghetto', 'Excellence', 'Habitat', 'Medicine', 'Marvel', 'Sunshine', 'Universe', 'Magnetic'],
+                                    "2Pac": ['Keep', 'California', 'Gospel', 'Picture', 'Hail', 'Nature', 'Holla', 'Love', 'Heartz', 'Amerikaz', 'Shorty', 'Eyez'],
+                                    "Method": ['Break', 'Bring', 'Rockwilder', 'Thang', 'Sandman', 'Spazzola', 'Stimulation', 'Crazy', 'Motto', 'Show', 'Happenin'],
+                                    "Busta": ['Break', 'Eyes', 'Gimme', 'Touch', 'Clap', 'Dreams', 'Fuckin', 'Galore', 'Hardcore', 'Branded', 'Bladow'],
+                                    "Geedorah": ['Snakes', 'Fazers', 'Greenbacks', 'Krazy'],
+                                    "Madvillain": ['Caps', 'Curls', 'Folder', 'Blunted', 'Accordion', 'Strange', 'Lifesaver', 'Rhinestone', 'Figaro', 'Raid', 'Today'],
+                                    "Ghostface": ['Milli', 'Cobra', 'Daytona', 'Motherless', 'Champ', 'Blade', 'Bricks', 'Wildflower'],
+                                    "Roots": ['Dundee', 'Adrenaline', 'Sayin', 'Boom', 'Break', 'Nuthin', 'Double', 'Distortion', 'Dynamite', 'Drawn', 'Ammo', 'Movement', 'Web' ],
+                                    "Wu-Tang": ['Method', 'Protect', 'Shame', 'Redbull', 'Yourz', 'Nuthing', 'Gravel', 'Shadow'],
+                                    "Blackalicious": ['Aerobics', 'Blazing', 'Flight', 'Smithzonian'],
+                                    "Ice+Cube": ['Fairytale', 'AmeriKKKa', 'Better', 'Check', 'Whatever', 'Ghetto', 'Greed', 'Hello', 'Good', 'Jackin', 'Killaz', 'Century', 'Roll', 'Mobbin', 'Wrong'],
+                                    "Dre": ['Witta', 'Niggaz', 'Deeez', 'Day', 'Ride', 'Thang', 'Stll', 'Episode', 'Watcher'],
+                                    "De+La+Soul": ['Soap', 'Breeze', 'Myself', 'Oooh', 'Tunin', 'Potholes', 'Bizness'],
+                                    "Kanye": ['Wire', 'Digger', 'Home', 'Diamonds', 'Touch', 'Falls', 'Words', 'Wonder', 'Gone', 'Major', 'Lollipop'],
+                                    "Nas": ['Affirmative', 'Zombie', 'Childhood', 'Bridging', 'Destroy', 'Knockaboot', 'Drunk', 'Ghetto', 'Halftime', 'Ruled', 'Nigga', 'Look', 'Nastradamus', 'Warfare', 'Smoking', 'Cross', 'Outcome', 'Prediction', 'Around'],
+                                    "Homosapien": ['Ahonetwo', 'Catch', 'Nightmare', 'Bombay', 'Gymnastics', 'Development', 'Proto', 'Town', 'Rewind'],
+                                    "Mase": ['Wanted', 'Breathe', 'Ready', 'Feel', 'Cheat', 'Lookin', 'Yours', 'Hurt','Welcome', 'Die'],
+                                    "Lil+Kim": ['Lighters', 'Crush', 'Tonight', 'Stick', 'Haters', 'Licks', 'Kitty Box', 'Winners', 'Jump', 'Kronik'],
+                                    "Goodie+Mob": ['Therapy', 'Wilderness', 'Away', 'Bag', 'Gutta', 'Soul', 'Standing', 'Experience', 'Party', ],
+                                    "DANGERDOOM": ['Mince', 'School', 'Bada', 'Mask', 'Basket', 'Benzie', 'Crosshairs', 'Nibre', 'Sofa', 'Space'],
+                                    "Kweli": ['Around', 'Cousins', 'Chaos', 'Gordon', 'Get+By', 'Knot', 'Guerrilla', 'Joy', 'Good+to+You', 'Shock', 'Waitin', 'Hill', 'Supreme', 'Proud', 'Work'],
+                                    "TI": ['24', 'ASAP', 'Bring', 'Dopeman', 'Dead', 'Wanna', 'Together', 'Goodlife', 'Hands', 'Straight', 'Limelight', 'King', 'Away', 'Entertainment', 'Type', 'Matter', 'Respect', 'Know', 'Whatever'],
+                                    "Ludacris": ['Fool', 'Area', 'Blow', 'Blueberry', 'Outside', 'America', 'Diamond', 'Back', 'Freaky', 'Game', 'Room', 'Move', 'Number', 'Rollout', 'Saturday', 'Skit', 'Screwed', 'Waterfalls', 'Virgo', 'Fantasy'],
+                                    "Common": ['Night', 'Wasted', 'Aquarius', 'Break', 'Close', 'Break', 'Book', 'Communism', 'Hustler', 'Funky', 'Amphitheater', 'Heaven', 'Want', 'Used', 'Misunderstood', 'Real', 'Resurrection', 'Retrospect', 'Southside', 'Soul', 'Sense', 'Corner', 'Game', 'Light', 'People', 'Questions', 'WMOE'],
+                                    "Eazy": ['Nobody', 'Height', 'Want', 'Talkin', 'Dunn', 'Real', 'More', 'Break', 'Street', 'Break', 'Rather', 'Boyz', 'Radio']};
+
+//Returns a 'random' element from an array, or just the index to that element.
+function randomFromArray(arr, justIndex) {
+    if (arr instanceof Array) {
+        var index = Math.floor(Math.random() * arr.length);
+        if (justIndex === true)   {return index;}
+            else {return arr[index];}
+    }
+    else {return -1;}
+};
+
+function pickSong() {
+    var shortArtist = randomFromArray(shortRappers);
+    return [shortArtist, randomFromArray(shortSongs[shortArtist])];
+}
+
+//Compose the request URL for retrieving ChartLyrics API data through YQL.
+function makeYQL(artist, song) {
+    lyricURL = 'http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?artist=' + artist + '&song=' + song;
+    lyricYQL = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from xml where url="' + lyricURL + '"') + '&format=json';
+
+    return lyricYQL;
+}
+
+
 // ---------------------------------------------------------------------------
 // UNDUM game library. This file needs to be supplemented with a game
 // file (conventionally called "your-game-name.game.js" which will
@@ -1028,7 +1086,8 @@
 
     /* This gets called when a link needs to be followed, regardless
      * of whether it was user action that initiated it. */
-    var linkRe = /^([-a-z0-9]+|\.)(\/([-0-9a-z]+))?$/;
+    //var linkMake = /^(?:[\$\?])([-a-z0-9]+)$/;
+    var linkRe = /^([-a-z0-9]+|\.)(\/([$-0-9a-z]+))?$/;
     var processLink = function(code) {
         // Check if we should do this now, or if processing is already
         // underway.
@@ -1067,10 +1126,9 @@
      */
     var processOneLink = function(code) {
         var match = code.match(linkRe);
-        assert(match, "link_not_valid".l({link:code}));
-
-        var situation = match[1];
-        var action = match[3];
+        assert(match, "link_not_valid".l({link:code}))
+        var situation = match[1];           //Start of href, before / character
+        var action = match[3];              //Action name in href after the / character
 
         // Change the situation
         if (situation !== '.') {
@@ -1088,26 +1146,58 @@
         if (action) {
             situation = getCurrentSituation();
             if (situation) {
-                if (game.beforeAction) {
-                    // Try the global act handler, and see if we need
-                    // to notify the situation.
-                    var consumed = game.beforeAction(
-                        character, system, current, action
-                    );
-                    if (consumed !== true) {
+                if (action.charAt(0) == '$') { //Here's what we do with a MAKE link
+                    makeThenGo(action.substr(1));
+                } else {
+                    if (game.beforeAction) {
+                        // Try the global act handler, and see if we need
+                        // to notify the situation.
+                        var consumed = game.beforeAction(
+                            character, system, current, action
+                        );
+                        if (consumed !== true) {
+                            situation.act(character, system, action);
+                        }
+                    } else {
+                        // We have no global act handler, always notify
+                        // the situation.
                         situation.act(character, system, action);
                     }
-                } else {
-                    // We have no global act handler, always notify
-                    // the situation.
-                    situation.act(character, system, action);
-                }
-                if (game.afterAction) {
-                    game.afterAction(character, system, current, action);
+                    if (game.afterAction) {
+                        game.afterAction(character, system, current, action);
+                    }
                 }
             }
         }
     };
+
+    /* Let's get clever! This function makes a new situation with arbitrary
+     * name, and directs browser there on callback */
+    var makeThenGo = function(keyword) {
+        var artistAndSong = pickSong();
+        var yql = makeYQL(artistAndSong[0], artistAndSong[1]);
+
+        console.log('makeThenGo(' + keyword + ')');
+        //var lyricURL = 'http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?artist=DOOM&song=Kookies';
+        //var lyricYQL = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from xml where url="' + lyricURL + '"') + '&format=json';
+        $.get(lyricYQL
+        , function (data) {
+            var res = data.query.results.GetLyricResult.Lyric;
+            var output = res.substr(0,400).replace(/\r?\n\r?\n/g,'</p><p>').replace(/\r?\n/g,'<br />');
+            game.situations[keyword] = new undum.SimpleSituation("<p>" + output + "...</p>" + "<p class='transient'>Do it <a href='./$"+ keyword+"z" + "' class='make'>again.</a></p>");
+        //system.doLink(keyword);
+            doTransitionTo(keyword);
+            });
+    }
+
+/*
+    var makeThenGo = function(keyword) {
+      undum.game.situations[keyword] = new undum.SimpleSituation("<p>This is some text, yeah?</p>\
+        <p><a href='start'>Start over</a> or do it <a href='$" + keyword + "z' class='make'>again.</a></p>");
+      processLink(keyword);
+    }
+
+*/
 
     /* This gets called when the user clicks a link to carry out an
      * action. */
@@ -1196,7 +1286,21 @@
                         return false;
                     });
                 } else {
-                    a.addClass("raw");
+                    /*
+                    * if (a.hasClass("make")) {
+                    *    a.click(function (event) {
+                    *        event.preventDefault();
+                    *
+                    *        //var match = href.match(linkMake);
+                    *        //makeThenGo(match[1]);
+                    *
+                    *       processClick(href);
+                    *       return false;
+                    *    });
+                    * }  else {
+                    */
+                        a.addClass("raw");
+                    // }
                 }
             }
         });
