@@ -27,12 +27,14 @@ var Excerpt = mongoose.model('Excerpt', excerptSchema);
  * the default port (27017)
  */
 
-mongoose.connect('mongodb://localhost/zizek', function (err) {
+//mongoose.connect('mongodb://localhost/zizek', function (err) { //Local database
+//NodeJitsu/MongoLab databse "zizektest":
+mongoose.connect('mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903', function(err) {
   // if we failed to connect, abort
   if (err) throw err;
 
   // we connected ok
-  parseText("tragedyfarce.txt")
+  parseText("../txt/tragedyfarce.txt")
   // createExcerpt("This is second /test/ \\(only a test\\)",
   //               "<p>This is second <em>test</em> (only a test)</p>",
   //               ["test", "only"]);
