@@ -1,5 +1,5 @@
-//to catch prefixes (including hyphenation): (?:[\w\b\-]+)?(...
-//to catch suffixes (including hyphenation):                ... (?:\w|\-|\'|&#39;)*
+//to catch prefixes (including hyphenation): ((?:[\w\b\-]+)?...
+//to catch suffixes (including hyphenation):                ...(?:\w|\-|\'|&#39;)*)
 //for apostrophes: (?:\'|&#39;)
 //for quotes: (?:\"|&quot;)
 
@@ -97,10 +97,15 @@ var zizekKeys = {
   "stalin": /(stalin(?:is[tm]s?)?)/ig,
   "lenin": /(lenin(?:is[tm]s?)?)/ig,
   "marx": /(marx(?:is[tm]s?)?)/ig,
-  "the matrix": /(the matrix)/ig,
+  "the matrix": /(the matrix|(?:the )?matrix(?: reloaded| revolutions?| trilogy| films?))/ig,
   "blade runner": /(blade runner)/ig,
   "noir": /(noirs?)/ig,
-  "parsifal": /(parsifal)/ig,
+  "normal": /(normal(?:\w|\-|\'|&#39;)*)/ig,
+  "labor": /(labou?r)/ig,
+  "slave": /(slave(?:\w|\-|\'|&#39;)*)/ig,
+  "imperial": /(imperial(?:\w|\-|\'|&#39;)*|empires?)/ig,
+  "triad": /((?:this |that |the |basic )?triads?)/ig,
+  "parsifal": /(parsifal(?:\w|\-|\'|&#39;)*)/ig,
   "excess": /(excess(?:\w|\-|\'|&#39;)*)/ig,
   "wagner": /(wagner(?:(?:\'|&#39;)s|ian)?)/ig,
   "lynch": /(Lynch(?:\w|\-|\'|&#39;)*)/g,

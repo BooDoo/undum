@@ -1,46 +1,54 @@
 //REST server
-var express = require('express'),
-    fs = require('fs'),
-    _ = require('lodash'),
-    MD = require('markdown').markdown,
-    app = express(),
-    corpus = [],
-    srcPath = "../txt",
-    sources, source,
-    s = 0, ss;
+var express       = require('express'),
+    //fs          = require('fs'),
+    _             = require('lodash'),
+    mongoose      = require('mongoose'),
+    Schema        = mongoose.Schema,
+    connection,
+    //MD          = require('markdown').markdown,
+    app           = express(),
+    excerptSchema = Schema({
+                        raw: String,
+                        html: String,
+                        keywords: [String],
+                        wordcount: Number,
+                        rawlength: Number
+                    }),
+    Excerpt       = mongoose.model('Excerpt', excerptSchema),
+    index         = require('./zizekKeys.js').keys;
 
-//Create the index/cache for corpus:
-corpus.index = {};
+//mongoose.connect('mongodb://localhost/zizek', function (err) { //Local database
+//NodeJitsu/MongoLab databse "zizektest":
+connection = mongoose.connect('mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903', function(err) {
+  // if we failed to connect, abort
+  if (err) throw err;
+});
 
-//Make omniarray of corpus:
-sources = fs.readdirSync(srcPath);
-for (ss = sources.length; s < ss; s += 1) {
-  source = srcPath + "/" + sources[s];
-  source = fs.readFileSync(source),
-  source = String.prototype.split.call(source, "\n\n");
-  corpus = corpus.concat(source, "\n\n");
-}
-
-
-
-// app.get('/corpus', function(req, res) {
-//   res.send([{name:'wine1'}, {name:'wine2'}]);
-// });
+//TODO: Pass array _id to exclude built on client side?
 app.get('/corpus/:word', function(req, res) {
   //Get a random excerpt featuring this word/phrase
-  var target = req.params.word.toLowerCase(),
-      targetRE = new RegExp (target, "ig"),
-      matches, match, matchHTML;
+  var target = req.params.word.toLowerCase();
+  //TODO: querystring.unescape(target)
+  //find a Mongo record with target in its keywords array
+  Excerpt.findOne({keywords: target}, 'html keywords wordcount', function(err, excerpt) {
+    if (err) throw err;
 
-  if (!corpus.index[target]) {
-    corpus.index[target] = _.filter(corpus, function (line) {return targetRE.test(line);});
-  }
-
-  matches = corpus.index[target];
-  match = matches[Math.floor(Math.random() * matches.length)];
-  matchHTML = MD.toHTML(match);
-  res.send({"matchHTML": matchHTML, "match": match, "index": target });
+    _.each(excerpt.keywords, function(key) {
+      //TODO: querystring.escape(key)
+      excerpt.html = excerpt.html.replace(index[key], '<a class="keyword" href="$/' + key + '">$1</a>');
+    });
+    
+    res.send(excerpt);
+  });
 });
  
 app.listen(3000);
 console.log('Listening on port 3000...');
+
+/* On request of keyword, get match from DB then do something like:
+var output = excerpt.html
+_.each(excerpt.keywords, function(key) {
+  output = output.replace(index.keys[key], '<a href="$/' + key + '">$1</a>');
+}
+return output;
+*/
