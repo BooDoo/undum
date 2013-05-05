@@ -17,38 +17,36 @@ var express       = require('express'),
     Excerpt       = mongoose.model('Excerpt', excerptSchema),
     index         = require('./zizekKeys.js').keys;
 
-//mongoose.connect('mongodb://localhost/zizek', function (err) { //Local database
+connection = mongoose.connect('mongodb://localhost/zizek', function (err) { //Local database
 //NodeJitsu/MongoLab databse "zizektest":
-connection = mongoose.connect('mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903', function(err) {
+//connection = mongoose.connect('mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903', function(err) {
   // if we failed to connect, abort
   if (err) throw err;
+  console.log("Connected to mongodb");
 });
 
-//TODO: Pass array _id to exclude built on client side?
+//Point root to the /games folder of the undum tree
+app.use('/', express.static('../games/'));
+
+//TODO: Pass array of _ids to exclude, maintained client-side?
 app.get('/corpus/:word', function(req, res) {
   //Get a random excerpt featuring this word/phrase
-  var target = req.params.word.toLowerCase();
-  //TODO: querystring.unescape(target)
+  var target = decodeURIComponent(req.params.word.toLowerCase());
+  console.log("As received:",req.params.word,"\nAfter decodeURIComponent:",target)
+  
   //find a Mongo record with target in its keywords array
-  Excerpt.findOne({keywords: target}, 'html keywords wordcount', function(err, excerpt) {
+  Excerpt.find({keywords: target}, 'html keywords wordcount', function(err, excerpts) {
     if (err) throw err;
-
+    var excerpt = excerpts[Math.floor(Math.random()*excerpts.length)];
     _.each(excerpt.keywords, function(key) {
       //TODO: querystring.escape(key)
-      excerpt.html = excerpt.html.replace(index[key], '<a class="keyword" href="$/' + key + '">$1</a>');
+      excerpt.html = excerpt.html.replace(index[key], '<a class="make" href="./$' + encodeURIComponent(key) + '">$1</a>');
     });
     
     res.send(excerpt);
+    console.log("Served _id:", excerpt._id, "for keyword:", target);
   });
 });
  
 app.listen(3000);
 console.log('Listening on port 3000...');
-
-/* On request of keyword, get match from DB then do something like:
-var output = excerpt.html
-_.each(excerpt.keywords, function(key) {
-  output = output.replace(index.keys[key], '<a href="$/' + key + '">$1</a>');
-}
-return output;
-*/

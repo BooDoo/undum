@@ -1174,30 +1174,19 @@ function makeYQL(artist, song) {
     /* Let's get clever! This function makes a new situation with arbitrary
      * name, and directs browser there on callback */
     var makeThenGo = function(keyword) {
-        var artistAndSong = pickSong();
-        var yql = makeYQL(artistAndSong[0], artistAndSong[1]);
-
         console.log('makeThenGo(' + keyword + ')');
         //var lyricURL = 'http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?artist=DOOM&song=Kookies';
         //var lyricYQL = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from xml where url="' + lyricURL + '"') + '&format=json';
-        $.get(lyricYQL
-        , function (data) {
-            var res = data.query.results.GetLyricResult.Lyric;
-            var output = res.substr(0,400).replace(/\r?\n\r?\n/g,'</p><p>').replace(/\r?\n/g,'<br />');
-            game.situations[keyword] = new undum.SimpleSituation("<p>" + output + "...</p>" + "<p class='transient'>Do it <a href='./$"+ keyword+"z" + "' class='make'>again.</a></p>");
-        //system.doLink(keyword);
+        $.get('./corpus/' + keyword
+        , function (excerpt) {
+            var res = excerpt.html,
+                output = res;
+
+            game.situations[keyword] = new undum.SimpleSituation(output);
+            //system.doLink(keyword);
             doTransitionTo(keyword);
             });
     }
-
-/*
-    var makeThenGo = function(keyword) {
-      undum.game.situations[keyword] = new undum.SimpleSituation("<p>This is some text, yeah?</p>\
-        <p><a href='start'>Start over</a> or do it <a href='$" + keyword + "z' class='make'>again.</a></p>");
-      processLink(keyword);
-    }
-
-*/
 
     /* This gets called when the user clicks a link to carry out an
      * action. */
@@ -1272,7 +1261,7 @@ function makeYQL(artist, song) {
             var a = $(element);
             if (!a.hasClass("raw")) {
                 var href = a.attr('href');
-                if (href.match(linkRe)) {
+                if (href.match(linkRe) || href.match(/\$/)) {
                     a.click(function(event) {
                         event.preventDefault();
 

@@ -28,12 +28,16 @@ var Excerpt = mongoose.model('Excerpt', excerptSchema);
  * the default port (27017)
  */
 
-//mongoose.connect('mongodb://localhost/zizek', function (err) { //Local database
+var connection = mongoose.connect('mongodb://localhost/zizek', function (err) { //Local database
 //NodeJitsu/MongoLab databse "zizektest":
-mongoose.connect('mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903', function(err) {
+//var connection = mongoose.connect('mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903', function(err) {
   // if we failed to connect, abort
   if (err) throw err;
   
+  //Wipe out the 'excerpts' collection which we'll be re-populating
+  mongoose.connection.collections['excerpts'].drop(function(err) {
+    console.log(err | "Dropped excerpts collection.");
+  });
   
   _.each(fs.readdirSync("../txt/"), function(file) {
     console.log("Reading ../txt/" + file, "...");
@@ -61,6 +65,7 @@ function indexText(srcText) {
     console.log("Working on",para);
     
     _.each(indexKeys, function(re, key) {
+      // console.log("going to test for",key);
       if (re.test(text)) {
         keywords.push(key);
       }
@@ -70,7 +75,7 @@ function indexText(srcText) {
       outputBuffer += "\nparagraph " + para + ": " + keywords + "\n...";
       
       //Actually load this record into MongoDB:
-      createExcerpt(text,  MD.toHTML(text), keywords);
+      createExcerpt(text, MD.toHTML(text), keywords);
     }
   });
 

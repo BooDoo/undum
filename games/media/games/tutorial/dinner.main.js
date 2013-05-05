@@ -26,7 +26,7 @@ undum.game.situations = {
         <p>Dynamic situation generation from XHR response.</p>\
         \
         <p class='transient'>To test this out with rap lyrics, just\
-        <a href='./$rap' class='make'>Click this link</a></p>"
+        <a href='./$marx' class='make'>Click this link</a></p>"
     ),
     // For variety, here we define a situation using the top-level
     // Situation type. This is a neat approach to generate text by
