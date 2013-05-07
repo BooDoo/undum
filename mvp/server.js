@@ -17,69 +17,58 @@ var express       = require('express'),
     Excerpt       = mongoose.model('Excerpt', excerptSchema),
     corpus        = "",
     index         = require('./zizekKeys.js').keys,
-    populateDB    = require('./populatemongodb.js').connectAndIndex,
     corpusPath    = "../txt/",
     targetDB      = 'mongodb://localhost/zizek'; //'mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903'
 
-//MERGE BELOW:
+//SHOULD DO:
 // - Connect to db
 // - Check if 'excerpts' collection exists
-// - Leave it alone if it does, unless "forceIndex" is passe
+// - Leave it alone if it does, unless "forceIndex" is passed
 
-var init = (function init(conn) {
-  // if we failed to connect, abort
-  if (conn) {
-    console.log("Connected to mongodb");
-  }
-  else {
-    console.log("No connection! Try again")
-    mongoose.connect(targetDB, function(err) {
-      if (err) throw err;
-
-      init(connection);
-    });
-  }
-  
-  if (!mongoose.connection.collections['excerpts']) {
-    console.log ("No excerpts collection, indexing corpus from " + corpusPath);
-    populateDB(targetDB, corpusPath, true);
-  } else {
-    console.log ("Excerpts collection already exists");
-  }
-})(connection);
-
-//'mongodb://localhost/zizek' //Local database
-//'mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903' // nodejitsu db
-//NodeJitsu/MongoLab databse "zizektest":
-var connectAndIndex = function connectAndIndex(targetDB, corpusPath, doIndex) {
+var startServer = function startServer(targetDB, corpusPath, doIndex) {
   corpusPath = corpusPath || "../txt/";
   targetDB = targetDB || "mongodb://localhost/zizek";
-  doIndex = doIndex || true;
+  doIndex = doIndex || false;
   
   mongoose.connect(targetDB, function(err) {
     // if we failed to connect, abort
     if (err) throw err;
     
-    //drop Excerpts collection:
-    if (doIndex) {
-      mongoose.connection.collections['excerpts'].drop(function(err) {
-        console.log('dropped excerpts collection');
+    Excerpt.findOne({"wordcount": {$gt: 0}}, function(err, exc) {
+      //if (err) console.log(err);
+      //console.log("Excerpt.findOne =", exc);
+      if (exc === null || typeof exc === "undefined") {
+        console.log("No excerpts found.")
+        doIndex = true;
+      }
 
-      //Rebuild corpus
-      _.each(fs.readdirSync(corpusPath), function(file) {
-        console.log("Reading" + corpusPath + file, "...");
-        corpus += "\n\n";
-        corpus += fs.readFileSync(corpusPath + file, "utf8");
-      });
-      
-      //Index it and push to mongodb
-      indexText(corpus);
-      });
-    }
+      //If there is no excerpts collection, or if we force a re-index:
+      if (doIndex) {
+        console.log ("Indexing corpus from " + corpusPath);
+        
+        mongoose.connection.collections['excerpts'].drop(function(err) {
+          console.log('dropped excerpts collection (if existing)');
+
+          //Rebuild corpus:
+          _.each(fs.readdirSync(corpusPath), function(file) {
+            console.log("Reading" + corpusPath + file, "...");
+            corpus += "\n\n";
+            corpus += fs.readFileSync(corpusPath + file, "utf8");
+          });
+          
+          //Index it and push to 'excerpts' collection
+          indexText(corpus);
+        });
+      }
+      //Otherwise take no action on collections...
+      else {
+        console.log ("Excerpts collection exists, starting server");
+        app.listen(3000);
+        console.log('Listening on port 3000...');
+      }
+    });
   });
 };
-
-//TWO FUNCTIONS ABOVE NEED TO BE MERGED TO PLAY NICE!
 
 /**
  * Data generation -- WORKS FINE
@@ -96,7 +85,7 @@ function indexText(srcText) {
     
     console.log("Working on",para);
     
-    _.each(indexKeys, function(re, key) {
+    _.each(index, function(re, key) {
       // console.log("going to test for",key);
       if (re.test(text)) {
         keywords.push(key);
@@ -119,7 +108,11 @@ function indexText(srcText) {
   console.log(toStore,"paragraphs have >3 keywords indexed.");
   console.log( (toStore/srcArray.length)*100,"% paragraphs kept.");
   fs.writeFileSync("./indexOutput.txt", outputBuffer);
-  done();
+
+
+  //All done! start the server
+  app.listen(3000);
+  console.log('Listening on port 3000...');
 }
 
 //TOTALLY SAFE/OK Schema/Mongoose BITS:
@@ -142,6 +135,8 @@ function done (err) {
     mongoose.disconnect();
   })
 }
+
+startServer(targetDB, corpusPath);
 
 //TOTALLY SAFE/OK EXPRESS SERVER BITS:
 
@@ -166,6 +161,3 @@ app.get('/corpus/:word', function(req, res) {
     console.log("Served _id:", excerpt._id, "for keyword:", target);
   });
 });
- 
-app.listen(3000);
-console.log('Listening on port 3000...');

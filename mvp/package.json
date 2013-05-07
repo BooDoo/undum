@@ -34,6 +34,6 @@
   },
   "subdomain": "dessert",
   "scripts": {
-    "start": "corpusserver.js"
+    "start": "server.js"
   }
 }
