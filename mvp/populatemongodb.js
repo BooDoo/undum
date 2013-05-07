@@ -39,6 +39,10 @@ var connectAndIndex = function connectAndIndex(targetDB, corpusPath) {
     // if we failed to connect, abort
     if (err) throw err;
     
+    //drop Excerpts collection:
+    mongoose.connection.collections['excerpts'].drop(function(err) {
+      console.log('dropped excerpts collection');
+    });
     
     _.each(fs.readdirSync(corpusPath), function(file) {
       console.log("Reading" + corpusPath + file, "...");

@@ -27,6 +27,13 @@ connection = mongoose.connect(targetDB, function(err) {
   // if we failed to connect, abort
   if (err) throw err;
   console.log("Connected to mongodb");
+  
+  if (!mongoose.connection.collections['excerpts']) {
+    console.log ("No excerpts collection, indexing corpus from " + corpusPath);
+    populateDB(targetDB, corpusPath);
+  } else {
+    console.log ("Excerpts collection already exists");
+  }
 });
 
 //Point root to the /games folder of the undum tree
