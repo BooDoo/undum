@@ -28,26 +28,27 @@ var Excerpt = mongoose.model('Excerpt', excerptSchema);
  * the default port (27017)
  */
 
-var connection = mongoose.connect('mongodb://localhost/zizek', function (err) { //Local database
+//mongoose.connect('mongodb://localhost/zizek', function (err) { //Local database
+//mongoose.connect('mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903') // nodejitsu db
 //NodeJitsu/MongoLab databse "zizektest":
-//var connection = mongoose.connect('mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903', function(err) {
-  // if we failed to connect, abort
-  if (err) throw err;
+var connectAndIndex = function connectAndIndex(targetDB, corpusPath) {
+  corpusPath = corpusPath || "../txt/";
+  targetDB = targetDB || "mongodb://localhost/zizek";
   
-  //Wipe out the 'excerpts' collection which we'll be re-populating
-  mongoose.connection.collections['excerpts'].drop(function(err) {
-    console.log(err | "Dropped excerpts collection.");
+  mongoose.connect(targetDB, function(err) {
+    // if we failed to connect, abort
+    if (err) throw err;
+    
+    
+    _.each(fs.readdirSync(corpusPath), function(file) {
+      console.log("Reading" + corpusPath + file, "...");
+      corpus += "\n\n";
+      corpus += fs.readFileSync(corpusPath + file, "utf8");
+    });
+    
+    indexText(corpus);
   });
-  
-  _.each(fs.readdirSync("../txt/"), function(file) {
-    console.log("Reading ../txt/" + file, "...");
-    corpus += "\n\n";
-    corpus += fs.readFileSync("../txt/" + file, "utf8");
-  });
-  
-  indexText(corpus);
-});
-
+};
 /**
  * Data generation
  */
@@ -87,6 +88,7 @@ function indexText(srcText) {
   console.log(toStore,"paragraphs have >3 keywords indexed.");
   console.log( (toStore/srcArray.length)*100,"% paragraphs kept.");
   fs.writeFileSync("./indexOutput.txt", outputBuffer);
+  done();
 }
 
 function createExcerpt (rawText, htmlContent, keywordArray) {
@@ -108,3 +110,5 @@ function done (err) {
     mongoose.disconnect();
   })
 }
+
+module.exports.connectAndIndex = connectAndIndex;
