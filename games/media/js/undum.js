@@ -1,37 +1,3 @@
-var shortRappers = ['DOOM', 'Notorious', 'Quest', 'Black+Star', 'Mos+Def', '2Pac', 'Method', 'Busta', 'Geedorah', 'Madvillain',
-                                        'Ghostface', 'Roots', 'Wu-Tang', 'Blackalicious', 'Ice+Cube', 'Dre', 'De+La+Soul', 'Kanye', 'Nas', 'Homosapien',
-                                        'Mase', 'Lil+Kim', 'Goodie+Mob', 'DANGERDOOM', 'Kweli', 'TI', 'Ludacris', 'Common', 'Eazy'],
-
-        shortSongs = {"DOOM": ['Dead', 'Doomsday', 'Finest', 'Drawls', 'Tick', 'Beer', 'Ladies', 'Flow', 'Hey', 'Greenbacks', 'Vomitspit', 'Kookies', 'Frenz'], 
-                                    "Notorious": ['Hypnotize', 'Juicy', 'Poppa', 'Door', 'Chance', 'Going', 'Problems', 'Friend', 'Bleed', 'Nobody', 'Machine', 'Crack', 'Phenomenon', 'Nasty'],
-                                    "Quest": ['Award', 'Kick', 'Scenario', 'Applebum', 'Relaxation', 'Find', 'Wallet', 'Jazz', 'God', 'Steppin', 'Clap', 'Rhime', 'Sex', 'Like', 'Butter', 'Lucien', 'Buggin', 'Common', 'Stories'],
-                                    "Black+Star": ['Astronomy', 'Brown', 'Will', 'Definition', 'Players', 'Respiration', 'Thieves', 'Twice'],
-                                    "Mos+Def": ['Document', 'Bedstuy', 'Ghetto', 'Excellence', 'Habitat', 'Medicine', 'Marvel', 'Sunshine', 'Universe', 'Magnetic'],
-                                    "2Pac": ['Keep', 'California', 'Gospel', 'Picture', 'Hail', 'Nature', 'Holla', 'Love', 'Heartz', 'Amerikaz', 'Shorty', 'Eyez'],
-                                    "Method": ['Break', 'Bring', 'Rockwilder', 'Thang', 'Sandman', 'Spazzola', 'Stimulation', 'Crazy', 'Motto', 'Show', 'Happenin'],
-                                    "Busta": ['Break', 'Eyes', 'Gimme', 'Touch', 'Clap', 'Dreams', 'Fuckin', 'Galore', 'Hardcore', 'Branded', 'Bladow'],
-                                    "Geedorah": ['Snakes', 'Fazers', 'Greenbacks', 'Krazy'],
-                                    "Madvillain": ['Caps', 'Curls', 'Folder', 'Blunted', 'Accordion', 'Strange', 'Lifesaver', 'Rhinestone', 'Figaro', 'Raid', 'Today'],
-                                    "Ghostface": ['Milli', 'Cobra', 'Daytona', 'Motherless', 'Champ', 'Blade', 'Bricks', 'Wildflower'],
-                                    "Roots": ['Dundee', 'Adrenaline', 'Sayin', 'Boom', 'Break', 'Nuthin', 'Double', 'Distortion', 'Dynamite', 'Drawn', 'Ammo', 'Movement', 'Web' ],
-                                    "Wu-Tang": ['Method', 'Protect', 'Shame', 'Redbull', 'Yourz', 'Nuthing', 'Gravel', 'Shadow'],
-                                    "Blackalicious": ['Aerobics', 'Blazing', 'Flight', 'Smithzonian'],
-                                    "Ice+Cube": ['Fairytale', 'AmeriKKKa', 'Better', 'Check', 'Whatever', 'Ghetto', 'Greed', 'Hello', 'Good', 'Jackin', 'Killaz', 'Century', 'Roll', 'Mobbin', 'Wrong'],
-                                    "Dre": ['Witta', 'Niggaz', 'Deeez', 'Day', 'Ride', 'Thang', 'Stll', 'Episode', 'Watcher'],
-                                    "De+La+Soul": ['Soap', 'Breeze', 'Myself', 'Oooh', 'Tunin', 'Potholes', 'Bizness'],
-                                    "Kanye": ['Wire', 'Digger', 'Home', 'Diamonds', 'Touch', 'Falls', 'Words', 'Wonder', 'Gone', 'Major', 'Lollipop'],
-                                    "Nas": ['Affirmative', 'Zombie', 'Childhood', 'Bridging', 'Destroy', 'Knockaboot', 'Drunk', 'Ghetto', 'Halftime', 'Ruled', 'Nigga', 'Look', 'Nastradamus', 'Warfare', 'Smoking', 'Cross', 'Outcome', 'Prediction', 'Around'],
-                                    "Homosapien": ['Ahonetwo', 'Catch', 'Nightmare', 'Bombay', 'Gymnastics', 'Development', 'Proto', 'Town', 'Rewind'],
-                                    "Mase": ['Wanted', 'Breathe', 'Ready', 'Feel', 'Cheat', 'Lookin', 'Yours', 'Hurt','Welcome', 'Die'],
-                                    "Lil+Kim": ['Lighters', 'Crush', 'Tonight', 'Stick', 'Haters', 'Licks', 'Kitty Box', 'Winners', 'Jump', 'Kronik'],
-                                    "Goodie+Mob": ['Therapy', 'Wilderness', 'Away', 'Bag', 'Gutta', 'Soul', 'Standing', 'Experience', 'Party', ],
-                                    "DANGERDOOM": ['Mince', 'School', 'Bada', 'Mask', 'Basket', 'Benzie', 'Crosshairs', 'Nibre', 'Sofa', 'Space'],
-                                    "Kweli": ['Around', 'Cousins', 'Chaos', 'Gordon', 'Get+By', 'Knot', 'Guerrilla', 'Joy', 'Good+to+You', 'Shock', 'Waitin', 'Hill', 'Supreme', 'Proud', 'Work'],
-                                    "TI": ['24', 'ASAP', 'Bring', 'Dopeman', 'Dead', 'Wanna', 'Together', 'Goodlife', 'Hands', 'Straight', 'Limelight', 'King', 'Away', 'Entertainment', 'Type', 'Matter', 'Respect', 'Know', 'Whatever'],
-                                    "Ludacris": ['Fool', 'Area', 'Blow', 'Blueberry', 'Outside', 'America', 'Diamond', 'Back', 'Freaky', 'Game', 'Room', 'Move', 'Number', 'Rollout', 'Saturday', 'Skit', 'Screwed', 'Waterfalls', 'Virgo', 'Fantasy'],
-                                    "Common": ['Night', 'Wasted', 'Aquarius', 'Break', 'Close', 'Break', 'Book', 'Communism', 'Hustler', 'Funky', 'Amphitheater', 'Heaven', 'Want', 'Used', 'Misunderstood', 'Real', 'Resurrection', 'Retrospect', 'Southside', 'Soul', 'Sense', 'Corner', 'Game', 'Light', 'People', 'Questions', 'WMOE'],
-                                    "Eazy": ['Nobody', 'Height', 'Want', 'Talkin', 'Dunn', 'Real', 'More', 'Break', 'Street', 'Break', 'Rather', 'Boyz', 'Radio']};
-
 //Returns a 'random' element from an array, or just the index to that element.
 function randomFromArray(arr, justIndex) {
     if (arr instanceof Array) {
@@ -41,11 +7,6 @@ function randomFromArray(arr, justIndex) {
     }
     else {return -1;}
 };
-
-function pickSong() {
-    var shortArtist = randomFromArray(shortRappers);
-    return [shortArtist, randomFromArray(shortSongs[shortArtist])];
-}
 
 //Compose the request URL for retrieving ChartLyrics API data through YQL.
 function makeYQL(artist, song) {
