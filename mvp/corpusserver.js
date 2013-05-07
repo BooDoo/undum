@@ -15,14 +15,25 @@ var express       = require('express'),
                         rawlength: Number
                     }),
     Excerpt       = mongoose.model('Excerpt', excerptSchema),
-    index         = require('./zizekKeys.js').keys;
+    index         = require('./zizekKeys.js').keys,
+    populateDB    = require('./populatemongodb.js').connectAndIndex,
+    corpusPath    = "../txt/",
+    targetDB      = 'mongodb://localhost/zizek'; //'mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903'
 
-connection = mongoose.connect('mongodb://localhost/zizek', function (err) { //Local database
-//NodeJitsu/MongoLab databse "zizektest":
-//connection = mongoose.connect('mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903', function(err) {
+//Check if DB populated, if it isn't, call 
+//populateDB(targetDB, corpusPath);
+
+connection = mongoose.connect(targetDB, function(err) {
   // if we failed to connect, abort
   if (err) throw err;
   console.log("Connected to mongodb");
+  
+  if (!mongoose.connection.collections['excerpts']) {
+    console.log ("No excerpts collection, indexing corpus from " + corpusPath);
+    populateDB(targetDB, corpusPath);
+  } else {
+    console.log ("Excerpts collection already exists");
+  }
 });
 
 //Point root to the /games folder of the undum tree
