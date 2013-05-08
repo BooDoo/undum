@@ -17,7 +17,7 @@ var express       = require('express'),
     Excerpt       = mongoose.model('Excerpt', excerptSchema),
     corpus        = "",
     index         = require('./zizekKeys.js').keys,
-    corpusPath    = "../txt/",
+    corpusPath    = "./txt/",
     targetDB      = 'mongodb://localhost/zizek'; //'mongodb://nodejitsu_BooDoo:ev8hnogf97ee7m1um43uplqi6a@ds059887.mongolab.com:59887/nodejitsu_BooDoo_nodejitsudb5409955903'
 
 //SHOULD DO:
@@ -26,7 +26,7 @@ var express       = require('express'),
 // - Leave it alone if it does, unless "forceIndex" is passed
 
 var startServer = function startServer(targetDB, corpusPath, doIndex) {
-  corpusPath = corpusPath || "../txt/";
+  corpusPath = corpusPath || "./txt/";
   targetDB = targetDB || "mongodb://localhost/zizek";
   doIndex = doIndex || false;
   
@@ -141,7 +141,7 @@ startServer(targetDB, corpusPath);
 //TOTALLY SAFE/OK EXPRESS SERVER BITS:
 
 //Point static root to the /games folder of the undum tree
-app.use('/', express.static('../games/'));
+app.use('/', express.static('./games/'));
 
 //TODO: Pass array of _ids to exclude, maintained client-side?
 app.get('/corpus/:word', function(req, res) {
