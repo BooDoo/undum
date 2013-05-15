@@ -196,6 +196,7 @@ a:hover {
 img.float_right {
     float: right;
     margin: 1.1em 0 1.1em 1.1em;
+    display: none; /* Not used for Dessert of the Real */
 }
 img.float_left {
     float: left;

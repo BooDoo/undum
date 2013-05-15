@@ -1,7 +1,11 @@
 {
   "name": "dessert",
   "description": "Dessert of the Real - A Conversation with Slavoj Zizek",
+<<<<<<< HEAD
   "version": "0.0.35",
+=======
+  "version": "0.0.3",
+>>>>>>> revised CSS
   "homepage": "https://github.com/BooDoo/undum",
   "author": {
     "name": "Joel McCoy",
