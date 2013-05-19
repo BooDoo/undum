@@ -24,4 +24,4 @@ stash = if File.exists?("uniques.json")
 patterns ||= JSON.load(stash.read)
 
 output = File.open("output.txt", "a:UTF-8")
-output << TrigramGenerator.generate_text(patterns, 4, 2) << "\n\n"
+output << TrigramGenerator.generate_text(patterns, 5, 2) << "\n\n"

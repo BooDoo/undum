@@ -1,6 +1,6 @@
 body {
     background: #170804 repeat-x left top; /*url("../img/page_bg.jpg")*/
-    font-family: Palatino, Times, "Times New Roman", serif;
+    font-family: Georgia, Palatino, Times, "Times New Roman", serif;
     font-size: 18px;
     line-height: 1.6em;
     background-attachment: fixed;
@@ -69,9 +69,9 @@ body {
 #title h1 span.fancy {
     font-size: 2.5em;
     line-height: 0;
-    font-family: Tangerine, Palatino, Times, "Times New Roman", serif;
+    font-family: Tangerine, Georgia, Palatino, Times, "Times New Roman", serif;
     font-style: italic;
-    margin: 0 -0.2em;
+    margin: 0 0;
 }
 #title .click_message {
     display: none;
@@ -97,7 +97,7 @@ body {
 
 /* Main content */
 #content_wrapper {
-    max-width: 28em;
+    max-width: 42em;
     position: relative;
     background: #e6e6c6 repeat left top; /*url("../img/text_bg.jpg")*/
     margin: 0.6em auto 1.1em auto;
@@ -121,7 +121,7 @@ hr {
     width: 1.1em;
     height: 2px;
 }
-p + p, p + img + p, p + hr + p {
+p + p, p + img + p, p + hr + p, h1 + p {
     text-indent: 1.6em;
 }
 #content h1 + p:first-line,
@@ -181,12 +181,16 @@ a {
     text-decoration: none;
     border-bottom: 1px solid transparent;
 }
+a.make {
+    color: #000;
+    font-weight: bold;
+}
 a.raw {
     padding-right: 14px;
     background: transparent url("../img/external_link.png") no-repeat right 4px;
 }
 a:hover {
-    border-bottom: 1px dotted #900;
+    border-bottom: 1px dotted #000;
 }
 
 img.float_right {
@@ -216,6 +220,7 @@ img.float_left {
     width: 8.9em;
     background: #cec3ae repeat left top; /*url("../img/tools_bg.jpg")*/
     position: absolute;
+    display: none; /* Not used for Dessert of the Real */
 }
 .tools p {
     font-size: 0.95em;
@@ -263,7 +268,7 @@ img.float_left {
 }
 
 #legal {
-    max-width: 33em;
+    max-width: 42em;
     color: #654;
     margin: 1em auto 0 auto;
     padding-bottom: 2.2em;

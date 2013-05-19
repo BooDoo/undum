@@ -8,14 +8,7 @@ function randomFromArray(arr, justIndex) {
     else {return -1;}
 };
 
-//Compose the request URL for retrieving ChartLyrics API data through YQL.
-function makeYQL(artist, song) {
-    lyricURL = 'http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?artist=' + artist + '&song=' + song;
-    lyricYQL = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from xml where url="' + lyricURL + '"') + '&format=json';
-
-    return lyricYQL;
-}
-
+var servedIds = [];
 
 // ---------------------------------------------------------------------------
 // UNDUM game library. This file needs to be supplemented with a game
@@ -1136,18 +1129,29 @@ function makeYQL(artist, song) {
      * name, and directs browser there on callback */
     var makeThenGo = function(keyword) {
         console.log('makeThenGo(' + keyword + ')');
-        //var lyricURL = 'http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?artist=DOOM&song=Kookies';
-        //var lyricYQL = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from xml where url="' + lyricURL + '"') + '&format=json';
-        $.get('./corpus/' + keyword
-        , function (excerpt) {
-            var res = excerpt.html,
-                output = res;
 
-            game.situations[keyword] = new undum.SimpleSituation(output);
-            //system.doLink(keyword);
-            doTransitionTo(keyword);
-            });
-    }
+        var served = servedIds,
+            postData = {"keyword": keyword};
+            if (served.length > 0)
+              postData.served = served;
+
+        //console.log(JSON.stringify(postData,null,2));
+        jQuery.ajax ({
+            url: "./corpus",
+            type: "POST",
+            data: JSON.stringify(postData),
+            contentType: "application/json; charset=utf-8",
+            success: function(excerpt){
+              var res = excerpt.html,
+                  output = res;
+              //Add this _id to the array of "already served."
+              served.push(excerpt._id);
+
+              game.situations[keyword] = new undum.SimpleSituation(output);
+              doTransitionTo(keyword);
+            }
+        });
+    };
 
     /* This gets called when the user clicks a link to carry out an
      * action. */
