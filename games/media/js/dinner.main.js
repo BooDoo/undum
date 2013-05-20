@@ -22,9 +22,11 @@ undum.game.version = "0.2";
 /* The situations that the game can be in. Each has a unique ID. */
 undum.game.situations = {
     start: new undum.SimpleSituation(
-        "<h1>Dessert of The Real</h1>\
-        <p class='transient'>Let's begin, as you do, with \
-        <a href='./$marx' class='make'>Marx</a></p>"
+        "<h1>PROOF OF CONCEPT</h1>" +
+        "<p class=\"frame\">It's just before 8:30 on a Monday evening as you arrive to meet Slovenian analytic philosopher and critic Slavoj Žižek for dinner. " +
+        "You find him seated at a large table in the back of the dining room, pawing angrily at his phone and wearing a grey crew-neck shirt.</p>" +
+        "<p class=\"frame\">On the table is a plate of spicy calamari (half-eaten) and what seems once to have been a cuba libre. " +
+        "He barely registers your arrival, but begins speaking in your general direction of <a class=\"make\" href=\"./%marx\">Marx</a>"
     ),
     // For variety, here we define a situation using the top-level
     // Situation type. This is a neat approach to generate text by

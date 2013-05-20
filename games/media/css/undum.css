@@ -114,6 +114,29 @@ p {
     -moz-transition: text-indent 0.25s ease;
     -webkit-transition: text-indent 0.25s ease;
 }
+p.excerpt {
+    margin: 0 2em 0;
+}
+
+p.frame {
+    font-style: italic;
+}
+
+hr + p.frame {
+    padding-top: 1.6em;
+}
+
+p.haiku {
+    text-align: center;
+    white-space: pre;
+    display: block;
+    padding: 1.6em;
+}
+
+p.frame + hr {
+    padding-bottom: 1.6em;
+}
+
 hr {
     border: none;
     background-color: rgba(0,0,0,0.25);
@@ -121,12 +144,13 @@ hr {
     width: 1.1em;
     height: 2px;
 }
-p + p, p + img + p, p + hr + p, h1 + p {
-    text-indent: 1.6em;
+p + p, p + img + p, p + hr + p, hr + p {
+    text-indent: 1.4em;
 }
 #content h1 + p:first-line,
 #content h1 + img + p:first-line {
     font-weight: bold;
+    text-indent: 0em;
     color: rgba(0,0,0,0.85);
 }
 #content h1 + p:first-letter,

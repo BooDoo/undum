@@ -118,7 +118,6 @@ function indexText(srcText) {
   console.log('Listening on port 3000...');
 }
 
-//TOTALLY SAFE/OK Schema/Mongoose BITS:
 function createExcerpt (rawText, htmlContent, keywordArray, counter) {
   var e = new Excerpt;
   e.raw = rawText;
@@ -148,8 +147,8 @@ app.use(express.bodyParser());
 
 //Added and testing: POST approach to allow for array of _id to omit.
 app.post('/corpus', function(req, res) {
-  console.log(req.body);
-  console.log(JSON.stringify(req.body,null,2));
+  //console.log(req.body);
+  //console.log(JSON.stringify(req.body,null,2));
   var target = decodeURIComponent(req.body.keyword.toLowerCase()),
       served = req.body.served || null,
       findQuery = {keywords: target};
@@ -158,23 +157,76 @@ app.post('/corpus', function(req, res) {
       }
 
   if (target === "h") {
-    var haiku = haikus[Math.floor(Math.random()*haikus.length)];
-    res.send({html: MD.toHTML(haiku).replace(/\n/g,"<br />")});
+    var haiku = MD.toHTML(haikus[Math.floor(Math.random()*haikus.length)]);
+    _.each(index, function(re, key) {
+      haiku = haiku.replace(re, '<a class="make" href="./%h">$1</a>');
+    });
+    haiku = haiku.replace(/\<p\>/ig, "<p class=\"haiku\">");
+    res.send({html: haiku.replace(/\n/g,"<br />")});
+
   }
   else if (target === "m") {
-    var markov = markovs[Math.floor(Math.random()*markovs.length)];
-    res.send({html: MD.toHTML(markov).replace(/\n/g,"<br />")});
+    var markov = MD.toHTML(markovs[Math.floor(Math.random()*markovs.length)]);
+    _.each(index, function(re, key) {
+      markov = markov.replace(re, '<a class="make" href="./%m">$1</a>');
+    });
+    res.send({html: markov.replace(/\n/g,"<br />")});
+  }
+  else if (target === "nextframe") {
+    var frameid = parseInt(req.body.frameid);
+
+    if (frameid === 1) {
+      res.send({html: "<hr />" +
+                      "<p class=\"frame\">Žižek pauses to flag down your server and, after recounting a filthy joke about Judith Butler, requests tuna tartare and a Bulleit Manhattan.</p>" +
+                      "<p class=\"frame\">After graciously thanking the server, he thrusts his finger in the air: \"Ah, <a class=\"make\" href=\"./%socialist\">Socialism</a>!\"</p>"
+               });
+    }
+    else if (frameid === 2) {
+      res.send({html: "<hr />" +
+                      "<p class=\"frame\">(more antics go here)</p>" +
+                      "<p class=\"frame\">(more food and drink ordered)</p>" +
+                      "<p class=\"frame\"><a class=\"make\" href=\"./%ideology\">Ideology</a></p>"
+               });
+    }
+    else if (frameid === 3) {
+      res.send({html: "<hr />" +
+                      "<p class=\"frame\">(Slavoj is starting to look a little loopy)</p>" +
+                      "<p class=\"frame\">(more food and drink ordered)</p>" +
+                      "<p class=\"frame\"><a class=\"make\" href=\"./%buddhism\">Buddhism</a></p>"
+               });
+    }
+    else if (frameid === 4) { //Start serving Markov chain
+      res.send({html: "<hr />" +
+                      "<p class=\"frame\">(slurred speech)</p>" +
+                      "<p class=\"frame\">(more food and drink ordered)</p>" +
+                      "<p class=\"frame\">\"<a class=\"make\" href=\"./%m\">My God! Another thing...</a>\"</p>"
+               });
+    }
+    else if (frameid === 5) { //Serve up haiku
+      res.send({html: "<hr />" +
+                      "<p class=\"frame\">(more food and drink ordered)</p>" +
+                      "<p class=\"frame\">(Slavoj begins writing on a napkin)</p>" +
+                      "<p class=\"frame\">Look at the <a class=\"make\" href=\"./%h\">napkin</a></p>"
+               });
+    }
+    else if (frameid === 6) { //Finale
+      res.send({html: "<hr />" +
+                      "<p class=\"frame\">(Slavoj lies his head on the table and begins snoring)</p>" +
+                      "<p class=\"frame\">(He leaves you with a bill of $675)</p>"
+               });
+    }
   }
   else {
     Excerpt.find(findQuery, 'html keywords wordcount', function(err, excerpts) {
       if (err) throw err;
       var excerpt = excerpts[Math.floor(Math.random()*excerpts.length)];
       _.each(excerpt.keywords, function(key) {
-        excerpt.html = excerpt.html.replace(index[key], '<a class="make" href="./$' + encodeURIComponent(key) + '">$1</a>');
+        excerpt.html = excerpt.html.replace(index[key], '<a class="make" href="./%' + encodeURIComponent(key) + '">$1</a>');
       });
       
+      excerpt.html = excerpt.html.replace(/\<p\>/ig, "<p class=\"excerpt\">");
       res.send(excerpt);
-      console.log("Served _id:", excerpt._id, "for keyword:", target);
+      console.log("Served _id:", excerpt._id, "(paragraph", excerpt.counter, ") for keyword:", target);
     });
   }
 });

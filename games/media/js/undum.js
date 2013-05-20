@@ -8,7 +8,8 @@ function randomFromArray(arr, justIndex) {
     else {return -1;}
 };
 
-var servedIds = [];
+var servedIds = [],
+    madeCount = 0;
 
 // ---------------------------------------------------------------------------
 // UNDUM game library. This file needs to be supplemented with a game
@@ -1041,7 +1042,7 @@ var servedIds = [];
     /* This gets called when a link needs to be followed, regardless
      * of whether it was user action that initiated it. */
     //var linkMake = /^(?:[\$\?])([-a-z0-9]+)$/;
-    var linkRe = /^([-a-z0-9]+|\.)(\/([$-0-9a-z]+))?$/;
+    var linkRe = /^([-a-z0-9]+|\.)(\/([%-0-9a-z]+))?$/;
     var processLink = function(code) {
         // Check if we should do this now, or if processing is already
         // underway.
@@ -1100,7 +1101,7 @@ var servedIds = [];
         if (action) {
             situation = getCurrentSituation();
             if (situation) {
-                if (action.charAt(0) == '$') { //Here's what we do with a MAKE link
+                if (action.charAt(0) == '%') { //Here's what we do with a MAKE link
                     makeThenGo(action.substr(1));
                 } else {
                     if (game.beforeAction) {
@@ -1128,7 +1129,7 @@ var servedIds = [];
     /* Let's get clever! This function makes a new situation with arbitrary
      * name, and directs browser there on callback */
     var makeThenGo = function(keyword) {
-        console.log('makeThenGo(' + keyword + ')');
+        //console.log('makeThenGo(' + keyword + ')');
 
         var served = servedIds,
             postData = {"keyword": keyword};
@@ -1145,10 +1146,28 @@ var servedIds = [];
               var res = excerpt.html,
                   output = res;
               //Add this _id to the array of "already served."
-              served.push(excerpt._id);
+              if (excerpt._id)
+                served.push(excerpt._id);
 
               game.situations[keyword] = new undum.SimpleSituation(output);
               doTransitionTo(keyword);
+              madeCount += 1;
+              console.log("madeCount:", madeCount)
+              if (madeCount % 3 === 0) {
+                console.log("madeCount divisible by 3, fetching frame");
+                jQuery.ajax ({
+                    url: "./corpus",
+                    type: "POST",
+                    data: JSON.stringify({"keyword": "nextframe", "frameid": madeCount / 3}),
+                    contentType: "application/json; charset=utf-8",
+                    success: function(excerpt){
+                        var res = excerpt.html,
+                        output = res;
+                        game.situations[keyword] = new undum.SimpleSituation(output);
+                        doTransitionTo(keyword);
+                    }
+                });
+              }
             }
         });
     };
@@ -1226,7 +1245,7 @@ var servedIds = [];
             var a = $(element);
             if (!a.hasClass("raw")) {
                 var href = a.attr('href');
-                if (href.match(linkRe) || href.match(/\$/)) {
+                if (href.match(linkRe) || href.match(/\%/)) {
                     a.click(function(event) {
                         event.preventDefault();
 
@@ -1240,25 +1259,10 @@ var servedIds = [];
                         return false;
                     });
                 } else {
-                    /*
-                    * if (a.hasClass("make")) {
-                    *    a.click(function (event) {
-                    *        event.preventDefault();
-                    *
-                    *        //var match = href.match(linkMake);
-                    *        //makeThenGo(match[1]);
-                    *
-                    *       processClick(href);
-                    *       return false;
-                    *    });
-                    * }  else {
-                    */
-                        a.addClass("raw");
-                    // }
+                    a.addClass("raw");
                 }
             }
         });
-
         return output;
     };
 
@@ -1380,6 +1384,8 @@ var servedIds = [];
 
         game: game,
         
+        makeThenGo: makeThenGo,
+
         isInteractive: function() { return interactive; },
 
         // The undum set of translated strings.
